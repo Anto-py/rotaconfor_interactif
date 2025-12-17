@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoTaConFor — Maîtrise ton Prompt</title>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== VARIABLES RETROFUTURISME ===== */
+        :root {
+            --retro-teal: #127676;
+            --retro-orange: #E4632E;
+            --retro-jaune: #E3A535;
+            --retro-ink: #0D1617;
+            --retro-paper: #F2EFE6;
+            --retro-teal-light: rgba(18, 118, 118, 0.1);
+            --retro-orange-light: rgba(228, 99, 46, 0.1);
+            --retro-jaune-light: rgba(227, 165, 53, 0.15);
+        }
+
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--retro-ink);
+            color: var(--retro-paper);
+            min-height: 100vh;
+            line-height: 1.6;
+            padding: 8px;
+        }
+
+        .page-wrapper {
+            position: relative;
+            min-height: calc(100vh - 16px);
+            border: 3px solid var(--retro-orange);
+        }
+
+        /* ===== CADRE PÉRIPHÉRIQUE ===== */
+        .frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .frame::before,
+        .frame::after,
+        .frame .corner-bl,
+        .frame .corner-br {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--retro-orange);
+        }
+
+        .frame::before { top: -3px; left: -3px; }
+        .frame::after { top: -3px; right: -3px; }
+        .frame .corner-bl { bottom: -3px; left: -3px; }
+        .frame .corner-br { bottom: -3px; right: -3px; }
+
+        /* Circuit lines */
+        .circuit-line {
+            position: absolute;
+            background: var(--retro-teal);
+        }
+        .circuit-line.top { top: 17px; left: 20px; right: 20px; height: 2px; }
+        .circuit-line.bottom { bottom: 17px; left: 20px; right: 20px; height: 2px; }
+        .circuit-line.left { left: 17px; top: 20px; bottom: 20px; width: 2px; }
+        .circuit-line.right { right: 17px; top: 20px; bottom: 20px; width: 2px; }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 50px;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            text-align: center;
+            padding: 60px 0 40px;
+        }
+
+        .logo-badge {
+            display: inline-block;
+            background: var(--retro-teal);
+            padding: 8px 24px;
+            margin-bottom: 20px;
+            clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 10px 100%, 0 50%);
+        }
+
+        .logo-badge span {
+            font-family: 'Anton', Impact, sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 0.2em;
+            color: var(--retro-paper);
+        }
+
+        h1 {
+            font-family: 'Anton', Impact, sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            letter-spacing: 0.05em;
+            color: var(--retro-paper);
+            margin-bottom: 10px;
+        }
+
+        h1 .highlight {
+            color: var(--retro-jaune);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--retro-teal);
+            font-weight: 500;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ===== INTRO SECTION ===== */
+        .intro-section {
+            background: var(--retro-paper);
+            color: var(--retro-ink);
+            padding: 40px;
+            margin: 40px 0;
+            clip-path: polygon(
+                15px 0, calc(100% - 15px) 0, 100% 15px,
+                100% calc(100% - 15px), calc(100% - 15px) 100%,
+                15px 100%, 0 calc(100% - 15px), 0 15px
+            );
+            border: 3px solid var(--retro-teal);
+        }
+
+        .intro-section h2 {
+            font-family: 'Anton', Impact, sans-serif;
+            font-size: 1.8rem;
+            color: var(--retro-teal);
+            letter-spacing: 0.05em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .intro-section h2::before {
+            content: '?';
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background: var(--retro-orange);
+            color: var(--retro-paper);
+            border-radius: 50%;
+            font-size: 1.5rem;
+        }
+
+        .intro-section p {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .intro-section strong {
+            color: var(--retro-teal);
+        }
+
+        /* ===== AVANTAGES ===== */
+        .advantages {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .advantage-card {
+            background: var(--retro-teal-light);
+            border-left: 4px solid var(--retro-teal);
+            padding: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .advantage-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(18, 118, 118, 0.2);
+        }
+
+        .advantage-card .icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .advantage-card h3 {
+            font-family: 'Anton', Impact, sans-serif;
+            font-size: 1rem;
+            letter-spacing: 0.1em;
+            color: var(--retro-teal);
+            margin-bottom: 8px;
+        }
+
+        .advantage-card p {
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* ===== NAVIGATION TABS ===== */
+        .tabs-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 50px 0 30px;
+        }
+
+        .tab-btn {
+            font-family: 'Anton', Impact, sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 0.1em;
+            padding: 15px 30px;
+            border: 3px solid var(--retro-teal);
+            background: transparent;
+            color: var(--retro-paper);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            clip-path: polygon(
+                10px 0, calc(100% - 10px) 0, 100% 10px,
+                100% calc(100% - 10px), calc(100% - 10px) 100%,
+                10px 100%, 0 calc(100% - 10px), 0 10px
+            );
+        }
+
+        .tab-btn:hover {
+            background: var(--retro-teal);
+            transform: translateY(-3px);
+        }
+
+        .tab-btn.active {
+            background: var(--retro-jaune);
+            color: var(--retro-ink);
+            border-color: var(--retro-jaune);
+        }
+
+        /* ===== TAB CONTENT ===== */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== COMPONENT CARD ===== */
+        .component-card {
+            background: var(--retro-paper);
+            color: var(--retro-ink);
+            padding: 40px;
+            margin-bottom: 30px;
+            clip-path: polygon(
+                15px 0, calc(100% - 15px) 0, 100% 15px,
+                100% calc(100% - 15px), calc(100% - 15px) 100%,
+                15px 100%, 0 calc(100% - 15px), 0 15px
+            );
+            border: 3px solid var(--retro-teal);
+            position: relative;
+        }
+
+        .component-card::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            bottom: 8px;
+            border: 2px solid var(--retro-orange);
+            pointer-events: none;
+            clip-path: polygon(
+                12px 0, calc(100% - 12px) 0, 100% 12px,
+                100% calc(100% - 12px), calc(100% - 12px) 100%,
+                12px 100%, 0 calc(100% - 12px), 0 12px
+            );
+        }
+
+        .component-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .component-letter {
+            font-family: 'Anton', Impact, sans-serif;
+            font-size: 3.5rem;
+            color: var(--retro-paper);
+            background: var(--retro-orange);
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .component-title {
+            font-family: 'Anton', Impact, sans-serif;
+            font-size: 2rem;
+            letter-spacing: 0.05em;
+            color: var(--retro-teal);
+        }
+
+        .component-subtitle {
+            font-size: 1rem;
+            color: var(--retro-ink);
+            opacity: 0.7;
+            margin-top: 5px;
+        }
+
+        .component-description {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        /* ===== EXEMPLES ===== */
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .example-box {
+            background: var(--retro-ink);
+            color: var(--retro-paper);
+            padding: 20px;
+            border-left: 4px solid var(--retro-jaune);
+        }
+
+        .example-box .label {
+            font-family: 'Anton', Impact, sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            color: var(--retro-jaune);
+            margin-bottom: 10px;
+        }
+
+        .example-box .content {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .example-box.bad {
+            border-left-color: var(--retro-orange);
+        }
+
+        .example-box.bad .label {
+            color: var(--retro-orange);
+        }
+
+        .example-box.good {
+            border-left-color: var(--retro-teal);
+        }
+
+        .example-box.good .label {
+            color: var(--retro-teal);
+        }
+
+        /* ===== TIPS ===== */
+        .tip-box {
+            background: var(--retro-jaune-light);
+            border-left: 4px solid var(--retro-jaune);
+            padding: 20px;
+            margin-top: 25px;
+        }
+
+        .tip-box .tip-title {
+            font-family: 'Anton', Impact, sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 0.15em;
+            color: var(--retro-orange);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tip-box p {
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        /* ===== BUILDER SECTION ===== */
+        .builder-section {
+            background: linear-gradient(135deg, var(--retro-teal) 0%, #0a5454 100%);
+            padding: 50px 40px;
+            margin: 50px 0;
+            clip-path: polygon(
+                20px 0, calc(100% - 20px) 0, 100% 20px,
+                100% calc(100% - 20px), calc(100% - 20px) 100%,
+                20px 100%, 0 calc(100% - 20px), 0 20px
+            );
+        }
+
+        .builder-section h2 {
+            font-family: 'Anton', Impact, sans-serif;
+            font-size: 2rem;
+            letter-spacing: 0.1em;
+            color: var(--retro-jaune);
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .builder-section .builder-subtitle {
+            text-align: center;
+            color: var(--retro-paper);
+            margin-bottom: 40px;
+            font-size: 1rem;
+        }
+
+        .builder-form {
+            display: grid;
+            gap: 25px;
+        }
+
+        .form-group {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-left: 4px solid var(--retro-jaune);
+        }
+
+        .form-group label {
+            font-family: 'Anton', Impact, sans-serif;
+            font-size: 1rem;
+            letter-spacing: 0.1em;
+            color: var(--retro-jaune);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .form-group label .letter-badge {
+            background: var(--retro-orange);
+            color: var(--retro-paper);
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            background: var(--retro-paper);
+            border: 2px solid transparent;
+            color: var(--retro-ink);
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--retro-jaune);
+        }
+
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .form-group .hint {
+            font-size: 0.85rem;
+            color: var(--retro-paper);
+            opacity: 0.8;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        /* ===== RESULT BOX ===== */
+        .result-container {
+            margin-top: 30px;
+        }
+
+        .result-label {
+            font-family: 'Anton', Impact, sans-serif;
+            font-size: 1rem;
+            letter-spacing: 0.15em;
+            color: var(--retro-paper);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .result-box {
+            background: var(--retro-ink);
+            border: 3px solid var(--retro-jaune);
+            padding: 25px;
+            min-height: 120px;
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--retro-paper);
+            position: relative;
+        }
+
+        .result-box .placeholder {
+            color: rgba(242, 239, 230, 0.4);
+            font-style: italic;
+        }
+
+        .result-box .ro { color: var(--retro-orange); font-weight: 600; }
+        .result-box .ta { color: var(--retro-teal); font-weight: 600; }
+        .result-box .con { color: var(--retro-jaune); font-weight: 600; }
+        .result-box .for { color: #8fd4d4; font-weight: 600; }
+
+        /* ===== COPY BUTTON ===== */
+        .copy-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+            background: var(--retro-jaune);
+            border: 3px solid var(--retro-teal);
+            padding: 0;
+            cursor: pointer;
+            border-radius: 50px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .copy-btn .btn-text {
+            font-family: 'Anton', Impact, sans-serif;
+            font-size: 1rem;
+            letter-spacing: 0.1em;
+            color: var(--retro-ink);
+            padding: 12px 25px;
+        }
+
+        .copy-btn .btn-icon {
+            background: var(--retro-orange);
+            color: var(--retro-paper);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .copy-btn.copied .btn-text {
+            background: var(--retro-teal);
+            color: var(--retro-paper);
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 2px solid var(--retro-teal);
+            margin-top: 60px;
+        }
+
+        footer p {
+            font-size: 0.9rem;
+            color: var(--retro-teal);
+        }
+
+        footer .footer-brand {
+            font-family: 'Anton', Impact, sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 0.15em;
+            color: var(--retro-jaune);
+            margin-bottom: 10px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 25px;
+            }
+
+            .frame { inset: 5px; }
+
+            .tabs-nav {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .tab-btn {
+                text-align: center;
+            }
+
+            .component-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .intro-section,
+            .component-card,
+            .builder-section {
+                padding: 25px;
+            }
+
+            .examples-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .component-letter {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        /* ===== FORMULE SECTION ===== */
+        .formula-display {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            padding: 30px;
+            background: var(--retro-ink);
+            margin: 30px 0;
+            border: 3px solid var(--retro-teal);
+        }
+
+        .formula-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .formula-letter {
+            font-family: 'Anton', Impact, sans-serif;
+            font-size: 2.5rem;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .formula-letter:hover {
+            transform: scale(1.1);
+        }
+
+        .formula-letter.ro { background: var(--retro-orange); color: var(--retro-paper); }
+        .formula-letter.ta { background: var(--retro-teal); color: var(--retro-paper); }
+        .formula-letter.con { background: var(--retro-jaune); color: var(--retro-ink); }
+        .formula-letter.for { background: var(--retro-paper); color: var(--retro-ink); border: 3px solid var(--retro-teal); }
+
+        .formula-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            color: var(--retro-paper);
+            text-transform: uppercase;
+        }
+
+        .formula-plus {
+            font-family: 'Anton', Impact, sans-serif;
+            font-size: 2rem;
+            color: var(--retro-jaune);
+        }
+
+        /* ===== INTERACTIVE EXAMPLE SELECTOR ===== */
+        .example-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .example-btn {
+            padding: 10px 20px;
+            background: transparent;
+            border: 2px solid var(--retro-paper);
+            color: var(--retro-paper);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .example-btn:hover,
+        .example-btn.active {
+            background: var(--retro-jaune);
+            border-color: var(--retro-jaune);
+            color: var(--retro-ink);
+        }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+    <!-- Cadre périphérique retrofuturiste -->
+    <div class="frame">
+        <div class="corner-bl"></div>
+        <div class="corner-br"></div>
+        <div class="circuit-line top"></div>
+        <div class="circuit-line bottom"></div>
+        <div class="circuit-line left"></div>
+        <div class="circuit-line right"></div>
+    </div>
+
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <div class="logo-badge">
+                <span>MAÎTRISE TES PROMPTS</span>
+            </div>
+            <h1 style="color: var(--retro-jaune);">ROTACONFOR</h1>
+            <p class="subtitle">La formule secrète pour faire parler l'IA exactement comme tu le veux</p>
+        </header>
+
+        <!-- INTRO -->
+        <section class="intro-section">
+            <h2>POURQUOI UNE FORMULE ?</h2>
+            <p>Un prompt, c'est comme une commande au restaurant. Si tu dis juste "à manger", tu risques d'avoir n'importe quoi. Mais si tu précises "une pizza margherita, sans olives, bien cuite", tu obtiens exactement ce que tu veux.</p>
+            <p><strong>RoTaConFor</strong> est ta recette pour des prompts qui t'amènent plus vite à une génération intéressante. (Et plus vite, ça veut aussi dire moins d'impact écologique!)</p>
+
+            <!-- Formule visuelle -->
+            <div class="formula-display">
+                <div class="formula-item">
+                    <div class="formula-letter ro">Ro</div>
+                    <span class="formula-label">Rôle</span>
+                </div>
+                <span class="formula-plus">+</span>
+                <div class="formula-item">
+                    <div class="formula-letter ta">Ta</div>
+                    <span class="formula-label">Tâche</span>
+                </div>
+                <span class="formula-plus">+</span>
+                <div class="formula-item">
+                    <div class="formula-letter con">Con</div>
+                    <span class="formula-label">Contexte</span>
+                </div>
+                <span class="formula-plus">+</span>
+                <div class="formula-item">
+                    <div class="formula-letter for">For</div>
+                    <span class="formula-label">Format</span>
+                </div>
+            </div>
+
+            <h2 style="margin-top: 40px;">LES AVANTAGES</h2>
+            <div class="advantages">
+                <div class="advantage-card">
+                    <div class="icon">🎯</div>
+                    <h3>PRÉCISION</h3>
+                    <p>Fini les réponses à côté de la plaque. L'IA comprend exactement ce que tu attends.</p>
+                </div>
+                <div class="advantage-card">
+                    <div class="icon">⚡</div>
+                    <h3>EFFICACITÉ</h3>
+                    <p>Tu obtiens le bon résultat beaucoup plus rapidement.</p>
+                </div>
+                <div class="advantage-card">
+                    <div class="icon">🧠</div>
+                    <h3>PENSÉE STRUCTURÉE</h3>
+                    <p>Tu apprends à clarifier tes propres idées avant de les formuler.</p>
+                </div>
+                <div class="advantage-card">
+                    <div class="icon">🔄</div>
+                    <h3>REPRODUCTIBLE</h3>
+                    <p>Une méthode que tu peux réutiliser pour tous types de demandes.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- NAVIGATION -->
+        <nav class="tabs-nav">
+            <button class="tab-btn active" data-tab="role">Ro — RÔLE</button>
+            <button class="tab-btn" data-tab="tache">Ta — TÂCHE</button>
+            <button class="tab-btn" data-tab="contexte">Con — CONTEXTE</button>
+            <button class="tab-btn" data-tab="format">For — FORMAT</button>
+        </nav>
+
+        <!-- TAB CONTENTS -->
+        <div id="role" class="tab-content active">
+            <article class="component-card">
+                <div class="component-header">
+                    <div class="component-letter">Ro</div>
+                    <div>
+                        <h3 class="component-title">RÔLE</h3>
+                        <p class="component-subtitle">Qui veux-tu que l'IA incarne ?</p>
+                    </div>
+                </div>
+                <p class="component-description">
+                    Le <strong>Rôle</strong> définit l'identité, l'expertise et la perspective que l'IA doit adopter. C'est comme choisir le bon expert pour répondre à ta question. Un médecin ne parlera pas comme un coach sportif, même s'ils parlent tous les deux de santé.
+                </p>
+                <p class="component-description">
+                    En donnant un rôle à l'IA, tu actives un ensemble de connaissances et un ton appropriés à ta demande.
+                </p>
+
+                <div class="examples-grid">
+                    <div class="example-box bad">
+                        <div class="label">❌ SANS RÔLE</div>
+                        <div class="content">"Explique-moi la photosynthèse"</div>
+                    </div>
+                    <div class="example-box good">
+                        <div class="label">✓ AVEC RÔLE</div>
+                        <div class="content">"Tu es un prof de SVT passionné qui explique à des lycéens. Explique-moi la photosynthèse."</div>
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <div class="tip-title">💡 ASTUCE PRO</div>
+                    <p>Plus le rôle est précis, meilleure sera la réponse. "Un nutritionniste spécialisé dans l'alimentation végétarienne pour sportifs" est plus efficace que "un expert en nutrition".</p>
+                </div>
+
+                <h4 style="margin-top: 30px; font-family: 'Anton', sans-serif; color: var(--retro-teal); letter-spacing: 0.1em;">EXEMPLES DE RÔLES</h4>
+                <div class="examples-grid">
+                    <div class="example-box">
+                        <div class="label">ÉDUCATION</div>
+                        <div class="content">"Tu es un tuteur patient qui adapte ses explications au niveau de l'élève"</div>
+                    </div>
+                    <div class="example-box">
+                        <div class="label">CRÉATIF</div>
+                        <div class="content">"Tu es un scénariste de série Netflix qui sait créer du suspense"</div>
+                    </div>
+                    <div class="example-box">
+                        <div class="label">TECHNIQUE</div>
+                        <div class="content">"Tu es un développeur web senior spécialisé en JavaScript"</div>
+                    </div>
+                    <div class="example-box">
+                        <div class="label">CONSEIL</div>
+                        <div class="content">"Tu es un conseiller d'orientation qui connaît les filières post-bac"</div>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        <div id="tache" class="tab-content">
+            <article class="component-card">
+                <div class="component-header">
+                    <div class="component-letter">Ta</div>
+                    <div>
+                        <h3 class="component-title">TÂCHE</h3>
+                        <p class="component-subtitle">Que veux-tu que l'IA fasse ?</p>
+                    </div>
+                </div>
+                <p class="component-description">
+                    La <strong>Tâche</strong> est l'action concrète que tu demandes. C'est le cœur de ton prompt. Utilise des verbes d'action clairs : "explique", "compare", "résume", "traduis", "crée", "analyse", "corrige"...
+                </p>
+                <p class="component-description">
+                    Une tâche bien formulée commence généralement par un verbe à l'impératif ou à l'infinitif.
+                </p>
+
+                <div class="examples-grid">
+                    <div class="example-box bad">
+                        <div class="label">❌ VAGUE</div>
+                        <div class="content">"La Révolution française"</div>
+                    </div>
+                    <div class="example-box good">
+                        <div class="label">✓ PRÉCIS</div>
+                        <div class="content">"Résume les 5 causes principales de la Révolution française"</div>
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <div class="tip-title">💡 ASTUCE PRO</div>
+                    <p>Découpe les tâches complexes en étapes. Au lieu de "Aide-moi avec mon exposé", demande : "1) Propose-moi un plan, 2) Développe la première partie".</p>
+                </div>
+
+                <h4 style="margin-top: 30px; font-family: 'Anton', sans-serif; color: var(--retro-teal); letter-spacing: 0.1em;">VERBES D'ACTION UTILES</h4>
+                <div class="examples-grid">
+                    <div class="example-box">
+                        <div class="label">COMPRENDRE</div>
+                        <div class="content">Explique • Définis • Clarifie • Vulgarise • Illustre</div>
+                    </div>
+                    <div class="example-box">
+                        <div class="label">ANALYSER</div>
+                        <div class="content">Compare • Contraste • Évalue • Critique • Décortique</div>
+                    </div>
+                    <div class="example-box">
+                        <div class="label">CRÉER</div>
+                        <div class="content">Rédige • Compose • Invente • Génère • Imagine</div>
+                    </div>
+                    <div class="example-box">
+                        <div class="label">TRANSFORMER</div>
+                        <div class="content">Résume • Traduis • Reformule • Adapte • Simplifie</div>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        <div id="contexte" class="tab-content">
+            <article class="component-card">
+                <div class="component-header">
+                    <div class="component-letter">Con</div>
+                    <div>
+                        <h3 class="component-title">CONTEXTE & CONTRAINTES</h3>
+                        <p class="component-subtitle">Quelles sont les circonstances et limites ?</p>
+                    </div>
+                </div>
+                <p class="component-description">
+                    Le <strong>Contexte</strong> donne le cadre : pour qui ? pourquoi ? dans quelle situation ? Les <strong>Contraintes</strong> sont les limites à respecter : longueur, ton, ce qu'il faut éviter...
+                </p>
+                <p class="component-description">
+                    C'est comme donner un brief à un freelance : plus il comprend ta situation, mieux il travaillera pour toi.
+                </p>
+
+                <div class="examples-grid">
+                    <div class="example-box bad">
+                        <div class="label">❌ SANS CONTEXTE</div>
+                        <div class="content">"Écris un mail pour demander un stage"</div>
+                    </div>
+                    <div class="example-box good">
+                        <div class="label">✓ AVEC CONTEXTE</div>
+                        <div class="content">"Écris un mail pour demander un stage de 2 semaines dans une agence de communication. Je suis en Terminale, je n'ai aucune expérience mais je suis motivé et créatif. Le mail doit être professionnel mais pas trop formel."</div>
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <div class="tip-title">💡 ASTUCE PRO</div>
+                    <p>N'hésite pas à préciser ce que tu NE veux PAS. "Sans jargon technique", "évite les clichés", "pas de bullet points" sont des contraintes utiles.</p>
+                </div>
+
+                <h4 style="margin-top: 30px; font-family: 'Anton', sans-serif; color: var(--retro-teal); letter-spacing: 0.1em;">TYPES DE CONTEXTE</h4>
+                <div class="examples-grid">
+                    <div class="example-box">
+                        <div class="label">👤 QUI ?</div>
+                        <div class="content">Public cible, niveau de connaissance, âge, profession...</div>
+                    </div>
+                    <div class="example-box">
+                        <div class="label">🎯 POURQUOI ?</div>
+                        <div class="content">Objectif final, usage prévu, problème à résoudre...</div>
+                    </div>
+                    <div class="example-box">
+                        <div class="label">📍 OÙ/QUAND ?</div>
+                        <div class="content">Contexte géographique, temporel, culturel...</div>
+                    </div>
+                    <div class="example-box">
+                        <div class="label">⚠️ CONTRAINTES</div>
+                        <div class="content">Longueur max, ton, éléments à inclure/exclure...</div>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        <div id="format" class="tab-content">
+            <article class="component-card">
+                <div class="component-header">
+                    <div class="component-letter">For</div>
+                    <div>
+                        <h3 class="component-title">FORMAT</h3>
+                        <p class="component-subtitle">Comment veux-tu recevoir la réponse ?</p>
+                    </div>
+                </div>
+                <p class="component-description">
+                    Le <strong>Format</strong> définit la forme de la réponse attendue. Liste ? Tableau ? Texte continu ? Dialogue ? Code ? Tu décides comment l'information doit être présentée.
+                </p>
+                <p class="component-description">
+                    Un bon format rend la réponse directement utilisable pour ton besoin.
+                </p>
+
+                <div class="examples-grid">
+                    <div class="example-box bad">
+                        <div class="label">❌ SANS FORMAT</div>
+                        <div class="content">"Donne-moi des idées de cadeaux"</div>
+                    </div>
+                    <div class="example-box good">
+                        <div class="label">✓ AVEC FORMAT</div>
+                        <div class="content">"Donne-moi 5 idées de cadeaux sous forme de tableau avec colonnes : Idée | Budget | Pour qui c'est adapté"</div>
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <div class="tip-title">💡 ASTUCE PRO</div>
+                    <p>Tu peux demander plusieurs formats : "D'abord un résumé en 2 phrases, puis une explication détaillée en 3 paragraphes".</p>
+                </div>
+
+                <h4 style="margin-top: 30px; font-family: 'Anton', sans-serif; color: var(--retro-teal); letter-spacing: 0.1em;">FORMATS POPULAIRES</h4>
+                <div class="examples-grid">
+                    <div class="example-box">
+                        <div class="label">📝 TEXTE</div>
+                        <div class="content">Paragraphes • Essai • Article • Mail • Script • Dialogue</div>
+                    </div>
+                    <div class="example-box">
+                        <div class="label">📋 LISTES</div>
+                        <div class="content">Bullet points • Numérotée • Checklist • Top 10</div>
+                    </div>
+                    <div class="example-box">
+                        <div class="label">📊 STRUCTURÉ</div>
+                        <div class="content">Tableau • Comparatif • Timeline • Mind map textuelle</div>
+                    </div>
+                    <div class="example-box">
+                        <div class="label">💻 TECHNIQUE</div>
+                        <div class="content">Code • JSON • Markdown • HTML • Pseudo-code</div>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        <!-- BUILDER INTERACTIF -->
+        <section class="builder-section">
+            <h2>🛠️ CONSTRUIS TON PROMPT</h2>
+            <p class="builder-subtitle">Remplis chaque champ et regarde ton prompt se construire automatiquement</p>
+
+            <div class="builder-form">
+                <div class="form-group">
+                    <label>
+                        <span class="letter-badge">Ro</span>
+                        RÔLE
+                    </label>
+                    <input type="text" id="input-role" placeholder="Ex: Tu es un coach sportif motivant">
+                    <p class="hint">Qui doit incarner l'IA pour cette tâche ?</p>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <span class="letter-badge">Ta</span>
+                        TÂCHE
+                    </label>
+                    <input type="text" id="input-tache" placeholder="Ex: Crée un programme d'entraînement">
+                    <p class="hint">Quelle action concrète demandes-tu ?</p>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <span class="letter-badge">Con</span>
+                        CONTEXTE & CONTRAINTES
+                    </label>
+                    <textarea id="input-contexte" placeholder="Ex: Je suis débutant, j'ai 30 min par jour, pas d'équipement. Je veux perdre du poids."></textarea>
+                    <p class="hint">Situation, public cible, limites à respecter...</p>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <span class="letter-badge">For</span>
+                        FORMAT
+                    </label>
+                    <input type="text" id="input-format" placeholder="Ex: Un tableau par semaine avec jour, exercices et durée">
+                    <p class="hint">Comment veux-tu recevoir la réponse ?</p>
+                </div>
+            </div>
+
+            <div class="result-container">
+                <p class="result-label">📤 TON PROMPT COMPLET</p>
+                <div class="result-box" id="result-box">
+                    <span class="placeholder">Remplis les champs ci-dessus pour voir ton prompt apparaître ici...</span>
+                </div>
+                <button class="copy-btn" id="copy-btn" onclick="copyPrompt()">
+                    <span class="btn-text">COPIER LE PROMPT</span>
+                    <span class="btn-icon">📋</span>
+                </button>
+            </div>
+
+            <!-- Exemples prédéfinis -->
+            <div style="margin-top: 40px;">
+                <p class="result-label">⚡ EXEMPLES RAPIDES</p>
+                <div class="example-selector">
+                    <button class="example-btn" onclick="loadExample('devoirs')">Aide aux devoirs</button>
+                    <button class="example-btn" onclick="loadExample('creative')">Écriture créative</button>
+                    <button class="example-btn" onclick="loadExample('code')">Programmation</button>
+                    <button class="example-btn" onclick="loadExample('revision')">Révisions exam</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <p class="footer-brand">ROTACONFOR</p>
+            <p>Formation IA — Deviens maître de tes prompts</p>
+        </footer>
+    </div>
+
+    <script>
+        // Navigation par onglets
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Retirer active de tous les boutons et contenus
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Ajouter active au bouton cliqué et au contenu correspondant
+                btn.classList.add('active');
+                document.getElementById(btn.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Mise à jour du prompt en temps réel
+        const inputRole = document.getElementById('input-role');
+        const inputTache = document.getElementById('input-tache');
+        const inputContexte = document.getElementById('input-contexte');
+        const inputFormat = document.getElementById('input-format');
+        const resultBox = document.getElementById('result-box');
+
+        function updatePrompt() {
+            const role = inputRole.value.trim();
+            const tache = inputTache.value.trim();
+            const contexte = inputContexte.value.trim();
+            const format = inputFormat.value.trim();
+
+            if (!role && !tache && !contexte && !format) {
+                resultBox.innerHTML = '<span class="placeholder">Remplis les champs ci-dessus pour voir ton prompt apparaître ici...</span>';
+                return;
+            }
+
+            let prompt = '';
+            
+            if (role) {
+                prompt += `<span class="ro">[RÔLE]</span> ${role}\n\n`;
+            }
+            if (tache) {
+                prompt += `<span class="ta">[TÂCHE]</span> ${tache}\n\n`;
+            }
+            if (contexte) {
+                prompt += `<span class="con">[CONTEXTE]</span> ${contexte}\n\n`;
+            }
+            if (format) {
+                prompt += `<span class="for">[FORMAT]</span> ${format}`;
+            }
+
+            resultBox.innerHTML = prompt.replace(/\n/g, '<br>');
+        }
+
+        inputRole.addEventListener('input', updatePrompt);
+        inputTache.addEventListener('input', updatePrompt);
+        inputContexte.addEventListener('input', updatePrompt);
+        inputFormat.addEventListener('input', updatePrompt);
+
+        // Copier le prompt
+        function copyPrompt() {
+            const role = inputRole.value.trim();
+            const tache = inputTache.value.trim();
+            const contexte = inputContexte.value.trim();
+            const format = inputFormat.value.trim();
+
+            let prompt = '';
+            if (role) prompt += role + '\n\n';
+            if (tache) prompt += tache + '\n\n';
+            if (contexte) prompt += contexte + '\n\n';
+            if (format) prompt += format;
+
+            if (prompt) {
+                navigator.clipboard.writeText(prompt.trim()).then(() => {
+                    const btn = document.getElementById('copy-btn');
+                    btn.classList.add('copied');
+                    btn.querySelector('.btn-text').textContent = 'COPIÉ !';
+                    btn.querySelector('.btn-icon').textContent = '✓';
+                    
+                    setTimeout(() => {
+                        btn.classList.remove('copied');
+                        btn.querySelector('.btn-text').textContent = 'COPIER LE PROMPT';
+                        btn.querySelector('.btn-icon').textContent = '📋';
+                    }, 2000);
+                });
+            }
+        }
+
+        // Charger les exemples prédéfinis
+        const examples = {
+            devoirs: {
+                role: "Tu es un tuteur patient et pédagogue spécialisé en mathématiques niveau lycée",
+                tache: "Explique-moi comment résoudre une équation du second degré",
+                contexte: "Je suis en Première, j'ai du mal avec le discriminant. J'ai besoin de comprendre le raisonnement, pas juste la réponse.",
+                format: "Explications étape par étape avec un exemple simple, puis un exercice pour m'entraîner"
+            },
+            creative: {
+                role: "Tu es un auteur de science-fiction inspiré par Black Mirror",
+                tache: "Écris le début d'une nouvelle sur l'intelligence artificielle",
+                contexte: "Le ton doit être intrigant et légèrement inquiétant. L'histoire se passe dans un futur proche réaliste. Évite les clichés des robots méchants.",
+                format: "Un texte de 300 mots maximum avec une accroche forte dès la première phrase"
+            },
+            code: {
+                role: "Tu es un développeur web expérimenté qui sait vulgariser pour les débutants",
+                tache: "Aide-moi à créer un formulaire de contact en HTML/CSS",
+                contexte: "Je débute en programmation, je connais les bases HTML. Le formulaire doit avoir : nom, email, message, bouton envoyer. Design moderne et épuré.",
+                format: "Le code complet commenté ligne par ligne + explications de chaque partie"
+            },
+            revision: {
+                role: "Tu es un professeur d'histoire-géographie qui prépare ses élèves au bac",
+                tache: "Crée une fiche de révision sur la Guerre Froide",
+                contexte: "Pour le bac de Terminale. Je dois retenir les dates clés, les acteurs principaux et comprendre les enjeux. J'ai 2h pour réviser ce chapitre.",
+                format: "Fiche structurée avec : dates essentielles (max 10), personnages clés, concepts à retenir, et 3 sujets de dissertation possibles"
+            }
+        };
+
+        function loadExample(type) {
+            const example = examples[type];
+            inputRole.value = example.role;
+            inputTache.value = example.tache;
+            inputContexte.value = example.contexte;
+            inputFormat.value = example.format;
+            updatePrompt();
+
+            // Mettre en surbrillance le bouton
+            document.querySelectorAll('.example-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Scroll vers le résultat
+            document.querySelector('.result-container').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+    </div>
+</body>
+</html>
