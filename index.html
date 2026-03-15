@@ -711,6 +711,36 @@
             color: var(--retro-teal);
         }
 
+        /* ===== LANG SWITCHER ===== */
+        .lang-switcher {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            display: flex;
+            gap: 4px;
+            z-index: 10;
+        }
+        .lang-btn {
+            background: transparent;
+            border: 2px solid var(--retro-teal);
+            color: var(--retro-teal);
+            font-weight: 800;
+            font-size: 0.75rem;
+            padding: 5px 11px;
+            cursor: pointer;
+            letter-spacing: 0.1em;
+            border-radius: 4px 2px 4px 2px;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .lang-btn.active {
+            background: var(--retro-teal);
+            color: var(--retro-paper);
+        }
+        .lang-btn:hover:not(.active) {
+            background: var(--retro-teal-light);
+        }
+
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             body { padding: 16px; }
@@ -779,43 +809,49 @@
         <div class="frame-line left"></div>
         <div class="frame-line right"></div>
 
+        <!-- Sélecteur de langue -->
+        <div class="lang-switcher">
+            <button class="lang-btn active" id="btn-fr" onclick="setLanguage('fr')">FR</button>
+            <button class="lang-btn" id="btn-en" onclick="setLanguage('en')">EN</button>
+        </div>
+
         <div class="container">
             <!-- HEADER -->
             <header>
                 <div class="logo-badge">
-                    <span>Maîtrise tes prompts</span>
+                    <span data-i18n="logo-tagline">Maîtrise tes prompts</span>
                 </div>
                 <h1>RoTaConFor</h1>
-                <p class="subtitle">La formule secrète pour faire parler l'IA exactement comme tu le veux</p>
+                <p class="subtitle" data-i18n="header-subtitle">La formule secrète pour faire parler l'IA exactement comme tu le veux</p>
             </header>
 
             <!-- INTRO -->
             <section class="intro-section">
                 <div class="retro-card">
-                    <h2><span class="icon-circle">?</span> Pourquoi une formule ?</h2>
-                    <p>Un prompt, c'est comme une commande au restaurant. Si tu dis juste "à manger", tu risques d'avoir n'importe quoi. Mais si tu précises "une pizza margherita, sans olives, bien cuite", tu obtiens exactement ce que tu veux.</p>
-                    <p><strong>RoTaConFor</strong> est ta recette pour des prompts qui t'amènent plus vite à une génération intéressante. (Et plus vite, ça veut aussi dire moins d'impact écologique !)</p>
+                    <h2><span class="icon-circle">?</span> <span data-i18n="intro-why-title">Pourquoi une formule ?</span></h2>
+                    <p data-i18n="intro-p1">Un prompt, c'est comme une commande au restaurant. Si tu dis juste "à manger", tu risques d'avoir n'importe quoi. Mais si tu précises "une pizza margherita, sans olives, bien cuite", tu obtiens exactement ce que tu veux.</p>
+                    <p data-i18n="intro-p2"><strong>RoTaConFor</strong> est ta recette pour des prompts qui t'amènent plus vite à une génération intéressante. (Et plus vite, ça veut aussi dire moins d'impact écologique !)</p>
 
                     <!-- Formule visuelle -->
                     <div class="formula-display">
                         <div class="formula-item">
                             <div class="formula-letter ro">Ro</div>
-                            <span class="formula-label">Rôle</span>
+                            <span class="formula-label" data-i18n="formula-role">Rôle</span>
                         </div>
                         <span class="formula-plus">+</span>
                         <div class="formula-item">
                             <div class="formula-letter ta">Ta</div>
-                            <span class="formula-label">Tâche</span>
+                            <span class="formula-label" data-i18n="formula-task">Tâche</span>
                         </div>
                         <span class="formula-plus">+</span>
                         <div class="formula-item">
                             <div class="formula-letter con">Con</div>
-                            <span class="formula-label">Contexte</span>
+                            <span class="formula-label" data-i18n="formula-context">Contexte</span>
                         </div>
                         <span class="formula-plus">+</span>
                         <div class="formula-item">
                             <div class="formula-letter for">For</div>
-                            <span class="formula-label">Format</span>
+                            <span class="formula-label" data-i18n="formula-format">Format</span>
                         </div>
                     </div>
 
@@ -823,27 +859,27 @@
                         <span class="flourish">✿</span>
                     </div>
 
-                    <h2 style="margin-top: 25px;"><span class="icon-circle">⚡</span> Les avantages</h2>
+                    <h2 style="margin-top: 25px;"><span class="icon-circle">⚡</span> <span data-i18n="advantages-title">Les avantages</span></h2>
                     <div class="advantages">
                         <div class="advantage-card">
                             <div class="icon">🎯</div>
-                            <h3>Précision</h3>
-                            <p>Fini les réponses à côté de la plaque. L'IA comprend exactement ce que tu attends.</p>
+                            <h3 data-i18n="adv-precision-title">Précision</h3>
+                            <p data-i18n="adv-precision-desc">Fini les réponses à côté de la plaque. L'IA comprend exactement ce que tu attends.</p>
                         </div>
                         <div class="advantage-card">
                             <div class="icon">⚡</div>
-                            <h3>Efficacité</h3>
-                            <p>Tu obtiens le bon résultat beaucoup plus rapidement.</p>
+                            <h3 data-i18n="adv-efficiency-title">Efficacité</h3>
+                            <p data-i18n="adv-efficiency-desc">Tu obtiens le bon résultat beaucoup plus rapidement.</p>
                         </div>
                         <div class="advantage-card">
                             <div class="icon">🧠</div>
-                            <h3>Pensée structurée</h3>
-                            <p>Tu apprends à clarifier tes propres idées avant de les formuler.</p>
+                            <h3 data-i18n="adv-thinking-title">Pensée structurée</h3>
+                            <p data-i18n="adv-thinking-desc">Tu apprends à clarifier tes propres idées avant de les formuler.</p>
                         </div>
                         <div class="advantage-card">
                             <div class="icon">🔄</div>
-                            <h3>Reproductible</h3>
-                            <p>Une méthode que tu peux réutiliser pour tous types de demandes.</p>
+                            <h3 data-i18n="adv-reusable-title">Reproductible</h3>
+                            <p data-i18n="adv-reusable-desc">Une méthode que tu peux réutiliser pour tous types de demandes.</p>
                         </div>
                     </div>
                 </div>
@@ -851,10 +887,10 @@
 
             <!-- NAVIGATION -->
             <nav class="tabs-nav">
-                <button class="tab-btn active" data-tab="role">Ro — Rôle</button>
-                <button class="tab-btn" data-tab="tache">Ta — Tâche</button>
-                <button class="tab-btn" data-tab="contexte">Con — Contexte</button>
-                <button class="tab-btn" data-tab="format">For — Format</button>
+                <button class="tab-btn active" data-tab="role" data-i18n="tab-role">Ro — Rôle</button>
+                <button class="tab-btn" data-tab="tache" data-i18n="tab-task">Ta — Tâche</button>
+                <button class="tab-btn" data-tab="contexte" data-i18n="tab-context">Con — Contexte</button>
+                <button class="tab-btn" data-tab="format" data-i18n="tab-format">For — Format</button>
             </nav>
 
             <!-- TAB CONTENTS -->
@@ -863,54 +899,54 @@
                     <div class="component-header">
                         <div class="component-letter">Ro</div>
                         <div>
-                            <h3 class="component-title">Rôle</h3>
-                            <p class="component-subtitle">Qui veux-tu que l'IA incarne ?</p>
+                            <h3 class="component-title" data-i18n="role-title">Rôle</h3>
+                            <p class="component-subtitle" data-i18n="role-subtitle">Qui veux-tu que l'IA incarne ?</p>
                         </div>
                     </div>
-                    <p class="component-description">
+                    <p class="component-description" data-i18n="role-desc1">
                         Le <strong>Rôle</strong> définit l'identité, l'expertise et la perspective que l'IA doit adopter. C'est comme choisir le bon expert pour répondre à ta question. Un médecin ne parlera pas comme un coach sportif, même s'ils parlent tous les deux de santé.
                     </p>
-                    <p class="component-description">
+                    <p class="component-description" data-i18n="role-desc2">
                         En donnant un rôle à l'IA, tu actives un ensemble de connaissances et un ton appropriés à ta demande.
                     </p>
 
                     <div class="examples-grid">
                         <div class="example-box bad">
-                            <div class="label">✗ Sans rôle</div>
-                            <div class="content">"Explique-moi la photosynthèse"</div>
+                            <div class="label" data-i18n="role-ex-bad-label">✗ Sans rôle</div>
+                            <div class="content" data-i18n="role-ex-bad-content">"Explique-moi la photosynthèse"</div>
                         </div>
                         <div class="example-box good">
-                            <div class="label">✓ Avec rôle</div>
-                            <div class="content">"Tu es un prof de SVT passionné qui explique à des lycéens. Explique-moi la photosynthèse."</div>
+                            <div class="label" data-i18n="role-ex-good-label">✓ Avec rôle</div>
+                            <div class="content" data-i18n="role-ex-good-content">"Tu es un prof de SVT passionné qui explique à des lycéens. Explique-moi la photosynthèse."</div>
                         </div>
                     </div>
 
                     <div class="tip-box">
-                        <div class="tip-title">💡 Astuce Pro</div>
-                        <p>Plus le rôle est précis, meilleure sera la réponse. "Un nutritionniste spécialisé dans l'alimentation végétarienne pour sportifs" est plus efficace que "un expert en nutrition".</p>
+                        <div class="tip-title" data-i18n="tip-label">💡 Astuce Pro</div>
+                        <p data-i18n="role-tip">Plus le rôle est précis, meilleure sera la réponse. "Un nutritionniste spécialisé dans l'alimentation végétarienne pour sportifs" est plus efficace que "un expert en nutrition".</p>
                     </div>
 
                     <div class="retro-separator">
                         <span class="flourish">❀</span>
                     </div>
 
-                    <h4 style="font-weight: 800; color: var(--retro-teal); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 15px;">Exemples de rôles</h4>
+                    <h4 style="font-weight: 800; color: var(--retro-teal); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 15px;" data-i18n="role-examples-title">Exemples de rôles</h4>
                     <div class="examples-grid">
                         <div class="example-box">
-                            <div class="label">Éducation</div>
-                            <div class="content">"Tu es un tuteur patient qui adapte ses explications au niveau de l'élève"</div>
+                            <div class="label" data-i18n="role-ex1-label">Éducation</div>
+                            <div class="content" data-i18n="role-ex1-content">"Tu es un tuteur patient qui adapte ses explications au niveau de l'élève"</div>
                         </div>
                         <div class="example-box">
-                            <div class="label">Créatif</div>
-                            <div class="content">"Tu es un scénariste de série Netflix qui sait créer du suspense"</div>
+                            <div class="label" data-i18n="role-ex2-label">Créatif</div>
+                            <div class="content" data-i18n="role-ex2-content">"Tu es un scénariste de série Netflix qui sait créer du suspense"</div>
                         </div>
                         <div class="example-box">
-                            <div class="label">Technique</div>
-                            <div class="content">"Tu es un développeur web senior spécialisé en JavaScript"</div>
+                            <div class="label" data-i18n="role-ex3-label">Technique</div>
+                            <div class="content" data-i18n="role-ex3-content">"Tu es un développeur web senior spécialisé en JavaScript"</div>
                         </div>
                         <div class="example-box">
-                            <div class="label">Conseil</div>
-                            <div class="content">"Tu es un conseiller d'orientation qui connaît les filières post-bac"</div>
+                            <div class="label" data-i18n="role-ex4-label">Conseil</div>
+                            <div class="content" data-i18n="role-ex4-content">"Tu es un conseiller d'orientation qui connaît les filières post-bac"</div>
                         </div>
                     </div>
                 </article>
@@ -921,54 +957,54 @@
                     <div class="component-header">
                         <div class="component-letter">Ta</div>
                         <div>
-                            <h3 class="component-title">Tâche</h3>
-                            <p class="component-subtitle">Que veux-tu que l'IA fasse ?</p>
+                            <h3 class="component-title" data-i18n="task-title">Tâche</h3>
+                            <p class="component-subtitle" data-i18n="task-subtitle">Que veux-tu que l'IA fasse ?</p>
                         </div>
                     </div>
-                    <p class="component-description">
+                    <p class="component-description" data-i18n="task-desc1">
                         La <strong>Tâche</strong> est l'action concrète que tu demandes. C'est le cœur de ton prompt. Utilise des verbes d'action clairs : "explique", "compare", "résume", "traduis", "crée", "analyse", "corrige"...
                     </p>
-                    <p class="component-description">
+                    <p class="component-description" data-i18n="task-desc2">
                         Une tâche bien formulée commence généralement par un verbe à l'impératif ou à l'infinitif.
                     </p>
 
                     <div class="examples-grid">
                         <div class="example-box bad">
-                            <div class="label">✗ Vague</div>
-                            <div class="content">"La Révolution française"</div>
+                            <div class="label" data-i18n="task-ex-bad-label">✗ Vague</div>
+                            <div class="content" data-i18n="task-ex-bad-content">"La Révolution française"</div>
                         </div>
                         <div class="example-box good">
-                            <div class="label">✓ Précis</div>
-                            <div class="content">"Résume les 5 causes principales de la Révolution française"</div>
+                            <div class="label" data-i18n="task-ex-good-label">✓ Précis</div>
+                            <div class="content" data-i18n="task-ex-good-content">"Résume les 5 causes principales de la Révolution française"</div>
                         </div>
                     </div>
 
                     <div class="tip-box">
-                        <div class="tip-title">💡 Astuce Pro</div>
-                        <p>Découpe les tâches complexes en étapes. Au lieu de "Aide-moi avec mon exposé", demande : "1) Propose-moi un plan, 2) Développe la première partie".</p>
+                        <div class="tip-title" data-i18n="tip-label">💡 Astuce Pro</div>
+                        <p data-i18n="task-tip">Découpe les tâches complexes en étapes. Au lieu de "Aide-moi avec mon exposé", demande : "1) Propose-moi un plan, 2) Développe la première partie".</p>
                     </div>
 
                     <div class="retro-separator">
                         <span class="flourish">❀</span>
                     </div>
 
-                    <h4 style="font-weight: 800; color: var(--retro-teal); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 15px;">Verbes d'action utiles</h4>
+                    <h4 style="font-weight: 800; color: var(--retro-teal); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 15px;" data-i18n="task-verbs-title">Verbes d'action utiles</h4>
                     <div class="examples-grid">
                         <div class="example-box">
-                            <div class="label">Comprendre</div>
-                            <div class="content">Explique • Définis • Clarifie • Vulgarise • Illustre</div>
+                            <div class="label" data-i18n="task-verb1-label">Comprendre</div>
+                            <div class="content" data-i18n="task-verb1-content">Explique • Définis • Clarifie • Vulgarise • Illustre</div>
                         </div>
                         <div class="example-box">
-                            <div class="label">Analyser</div>
-                            <div class="content">Compare • Contraste • Évalue • Critique • Décortique</div>
+                            <div class="label" data-i18n="task-verb2-label">Analyser</div>
+                            <div class="content" data-i18n="task-verb2-content">Compare • Contraste • Évalue • Critique • Décortique</div>
                         </div>
                         <div class="example-box">
-                            <div class="label">Créer</div>
-                            <div class="content">Rédige • Compose • Invente • Génère • Imagine</div>
+                            <div class="label" data-i18n="task-verb3-label">Créer</div>
+                            <div class="content" data-i18n="task-verb3-content">Rédige • Compose • Invente • Génère • Imagine</div>
                         </div>
                         <div class="example-box">
-                            <div class="label">Transformer</div>
-                            <div class="content">Résume • Traduis • Reformule • Adapte • Simplifie</div>
+                            <div class="label" data-i18n="task-verb4-label">Transformer</div>
+                            <div class="content" data-i18n="task-verb4-content">Résume • Traduis • Reformule • Adapte • Simplifie</div>
                         </div>
                     </div>
                 </article>
@@ -979,54 +1015,54 @@
                     <div class="component-header">
                         <div class="component-letter">Con</div>
                         <div>
-                            <h3 class="component-title">Contexte & Contraintes</h3>
-                            <p class="component-subtitle">Quelles sont les circonstances et limites ?</p>
+                            <h3 class="component-title" data-i18n="context-title">Contexte & Contraintes</h3>
+                            <p class="component-subtitle" data-i18n="context-subtitle">Quelles sont les circonstances et limites ?</p>
                         </div>
                     </div>
-                    <p class="component-description">
+                    <p class="component-description" data-i18n="context-desc1">
                         Le <strong>Contexte</strong> donne le cadre : pour qui ? pourquoi ? dans quelle situation ? Les <strong>Contraintes</strong> sont les limites à respecter : longueur, ton, ce qu'il faut éviter...
                     </p>
-                    <p class="component-description">
+                    <p class="component-description" data-i18n="context-desc2">
                         C'est comme donner un brief à un freelance : plus il comprend ta situation, mieux il travaillera pour toi.
                     </p>
 
                     <div class="examples-grid">
                         <div class="example-box bad">
-                            <div class="label">✗ Sans contexte</div>
-                            <div class="content">"Écris un mail pour demander un stage"</div>
+                            <div class="label" data-i18n="context-ex-bad-label">✗ Sans contexte</div>
+                            <div class="content" data-i18n="context-ex-bad-content">"Écris un mail pour demander un stage"</div>
                         </div>
                         <div class="example-box good">
-                            <div class="label">✓ Avec contexte</div>
-                            <div class="content">"Écris un mail pour demander un stage de 2 semaines dans une agence de communication. Je suis en Terminale, je n'ai aucune expérience mais je suis motivé et créatif. Le mail doit être professionnel mais pas trop formel."</div>
+                            <div class="label" data-i18n="context-ex-good-label">✓ Avec contexte</div>
+                            <div class="content" data-i18n="context-ex-good-content">"Écris un mail pour demander un stage de 2 semaines dans une agence de communication. Je suis en Terminale, je n'ai aucune expérience mais je suis motivé et créatif. Le mail doit être professionnel mais pas trop formel."</div>
                         </div>
                     </div>
 
                     <div class="tip-box">
-                        <div class="tip-title">💡 Astuce Pro</div>
-                        <p>N'hésite pas à préciser ce que tu NE veux PAS. "Sans jargon technique", "évite les clichés", "pas de bullet points" sont des contraintes utiles.</p>
+                        <div class="tip-title" data-i18n="tip-label">💡 Astuce Pro</div>
+                        <p data-i18n="context-tip">N'hésite pas à préciser ce que tu NE veux PAS. "Sans jargon technique", "évite les clichés", "pas de bullet points" sont des contraintes utiles.</p>
                     </div>
 
                     <div class="retro-separator">
                         <span class="flourish">❀</span>
                     </div>
 
-                    <h4 style="font-weight: 800; color: var(--retro-teal); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 15px;">Types de contexte</h4>
+                    <h4 style="font-weight: 800; color: var(--retro-teal); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 15px;" data-i18n="context-types-title">Types de contexte</h4>
                     <div class="examples-grid">
                         <div class="example-box">
-                            <div class="label">👤 Qui ?</div>
-                            <div class="content">Public cible, niveau de connaissance, âge, profession...</div>
+                            <div class="label" data-i18n="context-type1-label">👤 Qui ?</div>
+                            <div class="content" data-i18n="context-type1-content">Public cible, niveau de connaissance, âge, profession...</div>
                         </div>
                         <div class="example-box">
-                            <div class="label">🎯 Pourquoi ?</div>
-                            <div class="content">Objectif final, usage prévu, problème à résoudre...</div>
+                            <div class="label" data-i18n="context-type2-label">🎯 Pourquoi ?</div>
+                            <div class="content" data-i18n="context-type2-content">Objectif final, usage prévu, problème à résoudre...</div>
                         </div>
                         <div class="example-box">
-                            <div class="label">📍 Où/Quand ?</div>
-                            <div class="content">Contexte géographique, temporel, culturel...</div>
+                            <div class="label" data-i18n="context-type3-label">📍 Où/Quand ?</div>
+                            <div class="content" data-i18n="context-type3-content">Contexte géographique, temporel, culturel...</div>
                         </div>
                         <div class="example-box">
-                            <div class="label">⚠️ Contraintes</div>
-                            <div class="content">Longueur max, ton, éléments à inclure/exclure...</div>
+                            <div class="label" data-i18n="context-type4-label">⚠️ Contraintes</div>
+                            <div class="content" data-i18n="context-type4-content">Longueur max, ton, éléments à inclure/exclure...</div>
                         </div>
                     </div>
                 </article>
@@ -1037,54 +1073,54 @@
                     <div class="component-header">
                         <div class="component-letter">For</div>
                         <div>
-                            <h3 class="component-title">Format</h3>
-                            <p class="component-subtitle">Comment veux-tu recevoir la réponse ?</p>
+                            <h3 class="component-title" data-i18n="format-title">Format</h3>
+                            <p class="component-subtitle" data-i18n="format-subtitle">Comment veux-tu recevoir la réponse ?</p>
                         </div>
                     </div>
-                    <p class="component-description">
+                    <p class="component-description" data-i18n="format-desc1">
                         Le <strong>Format</strong> définit la forme de la réponse attendue. Liste ? Tableau ? Texte continu ? Dialogue ? Code ? Tu décides comment l'information doit être présentée.
                     </p>
-                    <p class="component-description">
+                    <p class="component-description" data-i18n="format-desc2">
                         Un bon format rend la réponse directement utilisable pour ton besoin.
                     </p>
 
                     <div class="examples-grid">
                         <div class="example-box bad">
-                            <div class="label">✗ Sans format</div>
-                            <div class="content">"Donne-moi des idées de cadeaux"</div>
+                            <div class="label" data-i18n="format-ex-bad-label">✗ Sans format</div>
+                            <div class="content" data-i18n="format-ex-bad-content">"Donne-moi des idées de cadeaux"</div>
                         </div>
                         <div class="example-box good">
-                            <div class="label">✓ Avec format</div>
-                            <div class="content">"Donne-moi 5 idées de cadeaux sous forme de tableau avec colonnes : Idée | Budget | Pour qui c'est adapté"</div>
+                            <div class="label" data-i18n="format-ex-good-label">✓ Avec format</div>
+                            <div class="content" data-i18n="format-ex-good-content">"Donne-moi 5 idées de cadeaux sous forme de tableau avec colonnes : Idée | Budget | Pour qui c'est adapté"</div>
                         </div>
                     </div>
 
                     <div class="tip-box">
-                        <div class="tip-title">💡 Astuce Pro</div>
-                        <p>Tu peux demander plusieurs formats : "D'abord un résumé en 2 phrases, puis une explication détaillée en 3 paragraphes".</p>
+                        <div class="tip-title" data-i18n="tip-label">💡 Astuce Pro</div>
+                        <p data-i18n="format-tip">Tu peux demander plusieurs formats : "D'abord un résumé en 2 phrases, puis une explication détaillée en 3 paragraphes".</p>
                     </div>
 
                     <div class="retro-separator">
                         <span class="flourish">❀</span>
                     </div>
 
-                    <h4 style="font-weight: 800; color: var(--retro-teal); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 15px;">Formats populaires</h4>
+                    <h4 style="font-weight: 800; color: var(--retro-teal); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 15px;" data-i18n="format-examples-title">Formats populaires</h4>
                     <div class="examples-grid">
                         <div class="example-box">
-                            <div class="label">📝 Texte</div>
-                            <div class="content">Paragraphes • Essai • Article • Mail • Script • Dialogue</div>
+                            <div class="label" data-i18n="format-ex1-label">📝 Texte</div>
+                            <div class="content" data-i18n="format-ex1-content">Paragraphes • Essai • Article • Mail • Script • Dialogue</div>
                         </div>
                         <div class="example-box">
-                            <div class="label">📋 Listes</div>
-                            <div class="content">Bullet points • Numérotée • Checklist • Top 10</div>
+                            <div class="label" data-i18n="format-ex2-label">📋 Listes</div>
+                            <div class="content" data-i18n="format-ex2-content">Bullet points • Numérotée • Checklist • Top 10</div>
                         </div>
                         <div class="example-box">
-                            <div class="label">📊 Structuré</div>
-                            <div class="content">Tableau • Comparatif • Timeline • Mind map textuelle</div>
+                            <div class="label" data-i18n="format-ex3-label">📊 Structuré</div>
+                            <div class="content" data-i18n="format-ex3-content">Tableau • Comparatif • Timeline • Mind map textuelle</div>
                         </div>
                         <div class="example-box">
-                            <div class="label">💻 Technique</div>
-                            <div class="content">Code • JSON • Markdown • HTML • Pseudo-code</div>
+                            <div class="label" data-i18n="format-ex4-label">💻 Technique</div>
+                            <div class="content" data-i18n="format-ex4-content">Code • JSON • Markdown • HTML • Pseudo-code</div>
                         </div>
                     </div>
                 </article>
@@ -1092,66 +1128,66 @@
 
             <!-- BUILDER INTERACTIF -->
             <section class="builder-section">
-                <h2>🛠️ Construis ton prompt</h2>
-                <p class="builder-subtitle">Remplis chaque champ et regarde ton prompt se construire automatiquement</p>
+                <h2 data-i18n="builder-title">🛠️ Construis ton prompt</h2>
+                <p class="builder-subtitle" data-i18n="builder-subtitle">Remplis chaque champ et regarde ton prompt se construire automatiquement</p>
 
                 <div class="builder-form">
                     <div class="form-group">
                         <label>
                             <span class="letter-badge">Ro</span>
-                            Rôle
+                            <span data-i18n="builder-role-label">Rôle</span>
                         </label>
-                        <input type="text" id="input-role" placeholder="Ex: Tu es un coach sportif motivant">
-                        <p class="hint">Qui doit incarner l'IA pour cette tâche ?</p>
+                        <input type="text" id="input-role" placeholder="Ex: Tu es un coach sportif motivant" data-i18n-ph="builder-role-ph">
+                        <p class="hint" data-i18n="builder-role-hint">Qui doit incarner l'IA pour cette tâche ?</p>
                     </div>
 
                     <div class="form-group">
                         <label>
                             <span class="letter-badge">Ta</span>
-                            Tâche
+                            <span data-i18n="builder-task-label">Tâche</span>
                         </label>
-                        <input type="text" id="input-tache" placeholder="Ex: Crée un programme d'entraînement">
-                        <p class="hint">Quelle action concrète demandes-tu ?</p>
+                        <input type="text" id="input-tache" placeholder="Ex: Crée un programme d'entraînement" data-i18n-ph="builder-task-ph">
+                        <p class="hint" data-i18n="builder-task-hint">Quelle action concrète demandes-tu ?</p>
                     </div>
 
                     <div class="form-group">
                         <label>
                             <span class="letter-badge">Con</span>
-                            Contexte & Contraintes
+                            <span data-i18n="builder-context-label">Contexte & Contraintes</span>
                         </label>
-                        <textarea id="input-contexte" placeholder="Ex: Je suis débutant, j'ai 30 min par jour, pas d'équipement. Je veux perdre du poids."></textarea>
-                        <p class="hint">Situation, public cible, limites à respecter...</p>
+                        <textarea id="input-contexte" placeholder="Ex: Je suis débutant, j'ai 30 min par jour, pas d'équipement. Je veux perdre du poids." data-i18n-ph="builder-context-ph"></textarea>
+                        <p class="hint" data-i18n="builder-context-hint">Situation, public cible, limites à respecter...</p>
                     </div>
 
                     <div class="form-group">
                         <label>
                             <span class="letter-badge">For</span>
-                            Format
+                            <span data-i18n="builder-format-label">Format</span>
                         </label>
-                        <input type="text" id="input-format" placeholder="Ex: Un tableau par semaine avec jour, exercices et durée">
-                        <p class="hint">Comment veux-tu recevoir la réponse ?</p>
+                        <input type="text" id="input-format" placeholder="Ex: Un tableau par semaine avec jour, exercices et durée" data-i18n-ph="builder-format-ph">
+                        <p class="hint" data-i18n="builder-format-hint">Comment veux-tu recevoir la réponse ?</p>
                     </div>
                 </div>
 
                 <div class="result-container">
-                    <p class="result-label">📤 Ton prompt complet</p>
+                    <p class="result-label" data-i18n="result-label">📤 Ton prompt complet</p>
                     <div class="result-box" id="result-box">
-                        <span class="placeholder">Remplis les champs ci-dessus pour voir ton prompt apparaître ici...</span>
+                        <span class="placeholder" data-i18n="result-placeholder">Remplis les champs ci-dessus pour voir ton prompt apparaître ici...</span>
                     </div>
                     <button class="retro-btn-pill" id="copy-btn" onclick="copyPrompt()">
-                        <span class="btn-text">Copier le prompt</span>
+                        <span class="btn-text" data-i18n="copy-btn">Copier le prompt</span>
                         <span class="btn-icon">📋</span>
                     </button>
                 </div>
 
                 <!-- Exemples prédéfinis -->
                 <div style="margin-top: 35px;">
-                    <p class="result-label">⚡ Exemples rapides</p>
+                    <p class="result-label" data-i18n="examples-label">⚡ Exemples rapides</p>
                     <div class="example-selector">
-                        <button class="example-btn" onclick="loadExample('devoirs')">Aide aux devoirs</button>
-                        <button class="example-btn" onclick="loadExample('creative')">Écriture créative</button>
-                        <button class="example-btn" onclick="loadExample('code')">Programmation</button>
-                        <button class="example-btn" onclick="loadExample('revision')">Révisions exam</button>
+                        <button class="example-btn" onclick="loadExample('devoirs')" data-i18n="example-btn-homework">Aide aux devoirs</button>
+                        <button class="example-btn" onclick="loadExample('creative')" data-i18n="example-btn-creative">Écriture créative</button>
+                        <button class="example-btn" onclick="loadExample('code')" data-i18n="example-btn-code">Programmation</button>
+                        <button class="example-btn" onclick="loadExample('revision')" data-i18n="example-btn-revision">Révisions exam</button>
                     </div>
                 </div>
             </section>
@@ -1162,24 +1198,194 @@
                     <span class="flourish">⚘</span>
                 </div>
                 <p class="footer-brand">RoTaConFor</p>
-                <p>Formation IA — Deviens maître de tes prompts</p>
+                <p data-i18n="footer-tagline">Formation IA — Deviens maître de tes prompts</p>
             </footer>
         </div>
     </div>
 
     <script>
-        // Navigation par onglets
+        // ===== TRADUCTIONS =====
+        const translations = {
+            fr: {
+                'logo-tagline': 'Maîtrise tes prompts',
+                'header-subtitle': 'La formule secrète pour faire parler l\'IA exactement comme tu le veux',
+                'intro-why-title': 'Pourquoi une formule ?',
+                'intro-p1': 'Un prompt, c\'est comme une commande au restaurant. Si tu dis juste "à manger", tu risques d\'avoir n\'importe quoi. Mais si tu précises "une pizza margherita, sans olives, bien cuite", tu obtiens exactement ce que tu veux.',
+                'intro-p2': '<strong>RoTaConFor</strong> est ta recette pour des prompts qui t\'amènent plus vite à une génération intéressante. (Et plus vite, ça veut aussi dire moins d\'impact écologique !)',
+                'formula-role': 'Rôle', 'formula-task': 'Tâche', 'formula-context': 'Contexte', 'formula-format': 'Format',
+                'advantages-title': 'Les avantages',
+                'adv-precision-title': 'Précision', 'adv-precision-desc': 'Fini les réponses à côté de la plaque. L\'IA comprend exactement ce que tu attends.',
+                'adv-efficiency-title': 'Efficacité', 'adv-efficiency-desc': 'Tu obtiens le bon résultat beaucoup plus rapidement.',
+                'adv-thinking-title': 'Pensée structurée', 'adv-thinking-desc': 'Tu apprends à clarifier tes propres idées avant de les formuler.',
+                'adv-reusable-title': 'Reproductible', 'adv-reusable-desc': 'Une méthode que tu peux réutiliser pour tous types de demandes.',
+                'tab-role': 'Ro — Rôle', 'tab-task': 'Ta — Tâche', 'tab-context': 'Con — Contexte', 'tab-format': 'For — Format',
+                'role-title': 'Rôle', 'role-subtitle': 'Qui veux-tu que l\'IA incarne ?',
+                'role-desc1': 'Le <strong>Rôle</strong> définit l\'identité, l\'expertise et la perspective que l\'IA doit adopter. C\'est comme choisir le bon expert pour répondre à ta question. Un médecin ne parlera pas comme un coach sportif, même s\'ils parlent tous les deux de santé.',
+                'role-desc2': 'En donnant un rôle à l\'IA, tu actives un ensemble de connaissances et un ton appropriés à ta demande.',
+                'role-ex-bad-label': '✗ Sans rôle', 'role-ex-bad-content': '"Explique-moi la photosynthèse"',
+                'role-ex-good-label': '✓ Avec rôle', 'role-ex-good-content': '"Tu es un prof de SVT passionné qui explique à des lycéens. Explique-moi la photosynthèse."',
+                'tip-label': '💡 Astuce Pro',
+                'role-tip': 'Plus le rôle est précis, meilleure sera la réponse. "Un nutritionniste spécialisé dans l\'alimentation végétarienne pour sportifs" est plus efficace que "un expert en nutrition".',
+                'role-examples-title': 'Exemples de rôles',
+                'role-ex1-label': 'Éducation', 'role-ex1-content': '"Tu es un tuteur patient qui adapte ses explications au niveau de l\'élève"',
+                'role-ex2-label': 'Créatif', 'role-ex2-content': '"Tu es un scénariste de série Netflix qui sait créer du suspense"',
+                'role-ex3-label': 'Technique', 'role-ex3-content': '"Tu es un développeur web senior spécialisé en JavaScript"',
+                'role-ex4-label': 'Conseil', 'role-ex4-content': '"Tu es un conseiller d\'orientation qui connaît les filières post-bac"',
+                'task-title': 'Tâche', 'task-subtitle': 'Que veux-tu que l\'IA fasse ?',
+                'task-desc1': 'La <strong>Tâche</strong> est l\'action concrète que tu demandes. C\'est le cœur de ton prompt. Utilise des verbes d\'action clairs : "explique", "compare", "résume", "traduis", "crée", "analyse", "corrige"...',
+                'task-desc2': 'Une tâche bien formulée commence généralement par un verbe à l\'impératif ou à l\'infinitif.',
+                'task-ex-bad-label': '✗ Vague', 'task-ex-bad-content': '"La Révolution française"',
+                'task-ex-good-label': '✓ Précis', 'task-ex-good-content': '"Résume les 5 causes principales de la Révolution française"',
+                'task-tip': 'Découpe les tâches complexes en étapes. Au lieu de "Aide-moi avec mon exposé", demande : "1) Propose-moi un plan, 2) Développe la première partie".',
+                'task-verbs-title': 'Verbes d\'action utiles',
+                'task-verb1-label': 'Comprendre', 'task-verb1-content': 'Explique • Définis • Clarifie • Vulgarise • Illustre',
+                'task-verb2-label': 'Analyser', 'task-verb2-content': 'Compare • Contraste • Évalue • Critique • Décortique',
+                'task-verb3-label': 'Créer', 'task-verb3-content': 'Rédige • Compose • Invente • Génère • Imagine',
+                'task-verb4-label': 'Transformer', 'task-verb4-content': 'Résume • Traduis • Reformule • Adapte • Simplifie',
+                'context-title': 'Contexte & Contraintes', 'context-subtitle': 'Quelles sont les circonstances et limites ?',
+                'context-desc1': 'Le <strong>Contexte</strong> donne le cadre : pour qui ? pourquoi ? dans quelle situation ? Les <strong>Contraintes</strong> sont les limites à respecter : longueur, ton, ce qu\'il faut éviter...',
+                'context-desc2': 'C\'est comme donner un brief à un freelance : plus il comprend ta situation, mieux il travaillera pour toi.',
+                'context-ex-bad-label': '✗ Sans contexte', 'context-ex-bad-content': '"Écris un mail pour demander un stage"',
+                'context-ex-good-label': '✓ Avec contexte', 'context-ex-good-content': '"Écris un mail pour demander un stage de 2 semaines dans une agence de communication. Je suis en Terminale, je n\'ai aucune expérience mais je suis motivé et créatif. Le mail doit être professionnel mais pas trop formel."',
+                'context-tip': 'N\'hésite pas à préciser ce que tu NE veux PAS. "Sans jargon technique", "évite les clichés", "pas de bullet points" sont des contraintes utiles.',
+                'context-types-title': 'Types de contexte',
+                'context-type1-label': '👤 Qui ?', 'context-type1-content': 'Public cible, niveau de connaissance, âge, profession...',
+                'context-type2-label': '🎯 Pourquoi ?', 'context-type2-content': 'Objectif final, usage prévu, problème à résoudre...',
+                'context-type3-label': '📍 Où/Quand ?', 'context-type3-content': 'Contexte géographique, temporel, culturel...',
+                'context-type4-label': '⚠️ Contraintes', 'context-type4-content': 'Longueur max, ton, éléments à inclure/exclure...',
+                'format-title': 'Format', 'format-subtitle': 'Comment veux-tu recevoir la réponse ?',
+                'format-desc1': 'Le <strong>Format</strong> définit la forme de la réponse attendue. Liste ? Tableau ? Texte continu ? Dialogue ? Code ? Tu décides comment l\'information doit être présentée.',
+                'format-desc2': 'Un bon format rend la réponse directement utilisable pour ton besoin.',
+                'format-ex-bad-label': '✗ Sans format', 'format-ex-bad-content': '"Donne-moi des idées de cadeaux"',
+                'format-ex-good-label': '✓ Avec format', 'format-ex-good-content': '"Donne-moi 5 idées de cadeaux sous forme de tableau avec colonnes : Idée | Budget | Pour qui c\'est adapté"',
+                'format-tip': 'Tu peux demander plusieurs formats : "D\'abord un résumé en 2 phrases, puis une explication détaillée en 3 paragraphes".',
+                'format-examples-title': 'Formats populaires',
+                'format-ex1-label': '📝 Texte', 'format-ex1-content': 'Paragraphes • Essai • Article • Mail • Script • Dialogue',
+                'format-ex2-label': '📋 Listes', 'format-ex2-content': 'Bullet points • Numérotée • Checklist • Top 10',
+                'format-ex3-label': '📊 Structuré', 'format-ex3-content': 'Tableau • Comparatif • Timeline • Mind map textuelle',
+                'format-ex4-label': '💻 Technique', 'format-ex4-content': 'Code • JSON • Markdown • HTML • Pseudo-code',
+                'builder-title': '🛠️ Construis ton prompt',
+                'builder-subtitle': 'Remplis chaque champ et regarde ton prompt se construire automatiquement',
+                'builder-role-label': 'Rôle', 'builder-role-ph': 'Ex: Tu es un coach sportif motivant', 'builder-role-hint': 'Qui doit incarner l\'IA pour cette tâche ?',
+                'builder-task-label': 'Tâche', 'builder-task-ph': 'Ex: Crée un programme d\'entraînement', 'builder-task-hint': 'Quelle action concrète demandes-tu ?',
+                'builder-context-label': 'Contexte & Contraintes', 'builder-context-ph': 'Ex: Je suis débutant, j\'ai 30 min par jour, pas d\'équipement. Je veux perdre du poids.', 'builder-context-hint': 'Situation, public cible, limites à respecter...',
+                'builder-format-label': 'Format', 'builder-format-ph': 'Ex: Un tableau par semaine avec jour, exercices et durée', 'builder-format-hint': 'Comment veux-tu recevoir la réponse ?',
+                'result-label': '📤 Ton prompt complet',
+                'result-placeholder': 'Remplis les champs ci-dessus pour voir ton prompt apparaître ici...',
+                'copy-btn': 'Copier le prompt', 'copied-btn': 'Copié !',
+                'examples-label': '⚡ Exemples rapides',
+                'example-btn-homework': 'Aide aux devoirs', 'example-btn-creative': 'Écriture créative',
+                'example-btn-code': 'Programmation', 'example-btn-revision': 'Révisions exam',
+                'footer-tagline': 'Formation IA — Deviens maître de tes prompts',
+                'prompt-role-tag': '[RÔLE]', 'prompt-task-tag': '[TÂCHE]', 'prompt-context-tag': '[CONTEXTE]', 'prompt-format-tag': '[FORMAT]'
+            },
+            en: {
+                'logo-tagline': 'Master your prompts',
+                'header-subtitle': 'The secret formula to make AI speak exactly the way you want',
+                'intro-why-title': 'Why a formula?',
+                'intro-p1': 'A prompt is like an order at a restaurant. If you just say "food", you might get anything. But if you specify "a margherita pizza, no olives, well done", you get exactly what you want.',
+                'intro-p2': '<strong>RoTaConFor</strong> is your recipe for prompts that get you to an interesting result faster. (And faster also means less environmental impact!)',
+                'formula-role': 'Role', 'formula-task': 'Task', 'formula-context': 'Context', 'formula-format': 'Format',
+                'advantages-title': 'Benefits',
+                'adv-precision-title': 'Precision', 'adv-precision-desc': 'No more off-target answers. The AI understands exactly what you expect.',
+                'adv-efficiency-title': 'Efficiency', 'adv-efficiency-desc': 'You get the right result much faster.',
+                'adv-thinking-title': 'Structured thinking', 'adv-thinking-desc': 'You learn to clarify your own ideas before articulating them.',
+                'adv-reusable-title': 'Reusable', 'adv-reusable-desc': 'A method you can reuse for all types of requests.',
+                'tab-role': 'Ro — Role', 'tab-task': 'Ta — Task', 'tab-context': 'Con — Context', 'tab-format': 'For — Format',
+                'role-title': 'Role', 'role-subtitle': 'Who do you want the AI to embody?',
+                'role-desc1': 'The <strong>Role</strong> defines the identity, expertise and perspective the AI should adopt. It\'s like choosing the right expert to answer your question. A doctor won\'t speak like a sports coach, even if they both talk about health.',
+                'role-desc2': 'By giving the AI a role, you activate a set of knowledge and a tone appropriate to your request.',
+                'role-ex-bad-label': '✗ No role', 'role-ex-bad-content': '"Explain photosynthesis to me"',
+                'role-ex-good-label': '✓ With role', 'role-ex-good-content': '"You are a passionate biology teacher explaining to high school students. Explain photosynthesis to me."',
+                'tip-label': '💡 Pro Tip',
+                'role-tip': 'The more specific the role, the better the answer. "A nutritionist specializing in vegetarian diets for athletes" is more effective than "a nutrition expert".',
+                'role-examples-title': 'Role examples',
+                'role-ex1-label': 'Education', 'role-ex1-content': '"You are a patient tutor who adapts explanations to the student\'s level"',
+                'role-ex2-label': 'Creative', 'role-ex2-content': '"You are a Netflix screenwriter who knows how to build suspense"',
+                'role-ex3-label': 'Technical', 'role-ex3-content': '"You are a senior web developer specializing in JavaScript"',
+                'role-ex4-label': 'Advisory', 'role-ex4-content': '"You are a career counselor who knows post-secondary pathways"',
+                'task-title': 'Task', 'task-subtitle': 'What do you want the AI to do?',
+                'task-desc1': 'The <strong>Task</strong> is the concrete action you\'re asking for. It\'s the core of your prompt. Use clear action verbs: "explain", "compare", "summarize", "translate", "create", "analyze", "correct"...',
+                'task-desc2': 'A well-formulated task usually starts with a verb in the imperative or infinitive.',
+                'task-ex-bad-label': '✗ Vague', 'task-ex-bad-content': '"The French Revolution"',
+                'task-ex-good-label': '✓ Precise', 'task-ex-good-content': '"Summarize the 5 main causes of the French Revolution"',
+                'task-tip': 'Break complex tasks into steps. Instead of "Help me with my presentation", ask: "1) Suggest an outline, 2) Develop the first section".',
+                'task-verbs-title': 'Useful action verbs',
+                'task-verb1-label': 'Understand', 'task-verb1-content': 'Explain • Define • Clarify • Simplify • Illustrate',
+                'task-verb2-label': 'Analyze', 'task-verb2-content': 'Compare • Contrast • Evaluate • Critique • Break down',
+                'task-verb3-label': 'Create', 'task-verb3-content': 'Write • Compose • Invent • Generate • Imagine',
+                'task-verb4-label': 'Transform', 'task-verb4-content': 'Summarize • Translate • Rephrase • Adapt • Simplify',
+                'context-title': 'Context & Constraints', 'context-subtitle': 'What are the circumstances and limits?',
+                'context-desc1': 'The <strong>Context</strong> sets the frame: for whom? why? in what situation? <strong>Constraints</strong> are the limits to respect: length, tone, what to avoid...',
+                'context-desc2': 'It\'s like briefing a freelancer: the more they understand your situation, the better they\'ll work for you.',
+                'context-ex-bad-label': '✗ No context', 'context-ex-bad-content': '"Write an email asking for an internship"',
+                'context-ex-good-label': '✓ With context', 'context-ex-good-content': '"Write an email asking for a 2-week internship at a communication agency. I\'m a senior in high school, I have no experience but I\'m motivated and creative. The email should be professional but not too formal."',
+                'context-tip': 'Don\'t hesitate to specify what you do NOT want. "No technical jargon", "avoid clichés", "no bullet points" are useful constraints.',
+                'context-types-title': 'Types of context',
+                'context-type1-label': '👤 Who?', 'context-type1-content': 'Target audience, knowledge level, age, profession...',
+                'context-type2-label': '🎯 Why?', 'context-type2-content': 'Final goal, intended use, problem to solve...',
+                'context-type3-label': '📍 Where/When?', 'context-type3-content': 'Geographic, temporal, cultural context...',
+                'context-type4-label': '⚠️ Constraints', 'context-type4-content': 'Max length, tone, elements to include/exclude...',
+                'format-title': 'Format', 'format-subtitle': 'How do you want to receive the answer?',
+                'format-desc1': 'The <strong>Format</strong> defines the form of the expected answer. List? Table? Continuous text? Dialogue? Code? You decide how the information should be presented.',
+                'format-desc2': 'A good format makes the answer directly usable for your need.',
+                'format-ex-bad-label': '✗ No format', 'format-ex-bad-content': '"Give me gift ideas"',
+                'format-ex-good-label': '✓ With format', 'format-ex-good-content': '"Give me 5 gift ideas as a table with columns: Idea | Budget | Who it\'s suitable for"',
+                'format-tip': 'You can ask for multiple formats: "First a 2-sentence summary, then a detailed explanation in 3 paragraphs".',
+                'format-examples-title': 'Popular formats',
+                'format-ex1-label': '📝 Text', 'format-ex1-content': 'Paragraphs • Essay • Article • Email • Script • Dialogue',
+                'format-ex2-label': '📋 Lists', 'format-ex2-content': 'Bullet points • Numbered • Checklist • Top 10',
+                'format-ex3-label': '📊 Structured', 'format-ex3-content': 'Table • Comparison • Timeline • Text mind map',
+                'format-ex4-label': '💻 Technical', 'format-ex4-content': 'Code • JSON • Markdown • HTML • Pseudocode',
+                'builder-title': '🛠️ Build your prompt',
+                'builder-subtitle': 'Fill in each field and watch your prompt build automatically',
+                'builder-role-label': 'Role', 'builder-role-ph': 'Ex: You are a motivating sports coach', 'builder-role-hint': 'Who should the AI embody for this task?',
+                'builder-task-label': 'Task', 'builder-task-ph': 'Ex: Create a training program', 'builder-task-hint': 'What concrete action are you asking for?',
+                'builder-context-label': 'Context & Constraints', 'builder-context-ph': 'Ex: I\'m a beginner, I have 30 min a day, no equipment. I want to lose weight.', 'builder-context-hint': 'Situation, target audience, limits to respect...',
+                'builder-format-label': 'Format', 'builder-format-ph': 'Ex: A weekly table with day, exercises and duration', 'builder-format-hint': 'How do you want to receive the answer?',
+                'result-label': '📤 Your complete prompt',
+                'result-placeholder': 'Fill in the fields above to see your prompt appear here...',
+                'copy-btn': 'Copy prompt', 'copied-btn': 'Copied!',
+                'examples-label': '⚡ Quick examples',
+                'example-btn-homework': 'Homework help', 'example-btn-creative': 'Creative writing',
+                'example-btn-code': 'Programming', 'example-btn-revision': 'Exam prep',
+                'footer-tagline': 'AI Training — Master your prompts',
+                'prompt-role-tag': '[ROLE]', 'prompt-task-tag': '[TASK]', 'prompt-context-tag': '[CONTEXT]', 'prompt-format-tag': '[FORMAT]'
+            }
+        };
+
+        let currentLang = 'fr';
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+            document.getElementById('btn-fr').classList.toggle('active', lang === 'fr');
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+
+            const t = translations[lang];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.dataset.i18n;
+                if (t[key] !== undefined) el.innerHTML = t[key];
+            });
+            document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+                const key = el.dataset.i18nPh;
+                if (t[key] !== undefined) el.placeholder = t[key];
+            });
+
+            updatePrompt();
+        }
+
+        // ===== NAVIGATION PAR ONGLETS =====
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
                 document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                
                 btn.classList.add('active');
                 document.getElementById(btn.dataset.tab).classList.add('active');
             });
         });
 
-        // Mise à jour du prompt en temps réel
+        // ===== BUILDER =====
         const inputRole = document.getElementById('input-role');
         const inputTache = document.getElementById('input-tache');
         const inputContexte = document.getElementById('input-contexte');
@@ -1187,30 +1393,22 @@
         const resultBox = document.getElementById('result-box');
 
         function updatePrompt() {
+            const t = translations[currentLang];
             const role = inputRole.value.trim();
             const tache = inputTache.value.trim();
             const contexte = inputContexte.value.trim();
             const format = inputFormat.value.trim();
 
             if (!role && !tache && !contexte && !format) {
-                resultBox.innerHTML = '<span class="placeholder">Remplis les champs ci-dessus pour voir ton prompt apparaître ici...</span>';
+                resultBox.innerHTML = `<span class="placeholder">${t['result-placeholder']}</span>`;
                 return;
             }
 
             let prompt = '';
-            
-            if (role) {
-                prompt += `<span class="ro">[RÔLE]</span> ${role}\n\n`;
-            }
-            if (tache) {
-                prompt += `<span class="ta">[TÂCHE]</span> ${tache}\n\n`;
-            }
-            if (contexte) {
-                prompt += `<span class="con">[CONTEXTE]</span> ${contexte}\n\n`;
-            }
-            if (format) {
-                prompt += `<span class="for">[FORMAT]</span> ${format}`;
-            }
+            if (role)    prompt += `<span class="ro">${t['prompt-role-tag']}</span> ${role}\n\n`;
+            if (tache)   prompt += `<span class="ta">${t['prompt-task-tag']}</span> ${tache}\n\n`;
+            if (contexte) prompt += `<span class="con">${t['prompt-context-tag']}</span> ${contexte}\n\n`;
+            if (format)  prompt += `<span class="for">${t['prompt-format-tag']}</span> ${format}`;
 
             resultBox.innerHTML = prompt.replace(/\n/g, '<br>');
         }
@@ -1220,8 +1418,8 @@
         inputContexte.addEventListener('input', updatePrompt);
         inputFormat.addEventListener('input', updatePrompt);
 
-        // Copier le prompt
         function copyPrompt() {
+            const t = translations[currentLang];
             const role = inputRole.value.trim();
             const tache = inputTache.value.trim();
             const contexte = inputContexte.value.trim();
@@ -1237,48 +1435,75 @@
                 navigator.clipboard.writeText(prompt.trim()).then(() => {
                     const btn = document.getElementById('copy-btn');
                     btn.classList.add('copied');
-                    btn.querySelector('.btn-text').textContent = 'Copié !';
+                    btn.querySelector('.btn-text').textContent = t['copied-btn'];
                     btn.querySelector('.btn-icon').textContent = '✓';
-                    
                     setTimeout(() => {
                         btn.classList.remove('copied');
-                        btn.querySelector('.btn-text').textContent = 'Copier le prompt';
+                        btn.querySelector('.btn-text').textContent = t['copy-btn'];
                         btn.querySelector('.btn-icon').textContent = '📋';
                     }, 2000);
                 });
             }
         }
 
-        // Charger les exemples prédéfinis
+        // ===== EXEMPLES PRÉDÉFINIS =====
         const examples = {
-            devoirs: {
-                role: "Tu es un tuteur patient et pédagogue spécialisé en mathématiques niveau lycée",
-                tache: "Explique-moi comment résoudre une équation du second degré",
-                contexte: "Je suis en Première, j'ai du mal avec le discriminant. J'ai besoin de comprendre le raisonnement, pas juste la réponse.",
-                format: "Explications étape par étape avec un exemple simple, puis un exercice pour m'entraîner"
+            fr: {
+                devoirs: {
+                    role: "Tu es un tuteur patient et pédagogue spécialisé en mathématiques niveau lycée",
+                    tache: "Explique-moi comment résoudre une équation du second degré",
+                    contexte: "Je suis en Première, j'ai du mal avec le discriminant. J'ai besoin de comprendre le raisonnement, pas juste la réponse.",
+                    format: "Explications étape par étape avec un exemple simple, puis un exercice pour m'entraîner"
+                },
+                creative: {
+                    role: "Tu es un auteur de science-fiction inspiré par Black Mirror",
+                    tache: "Écris le début d'une nouvelle sur l'intelligence artificielle",
+                    contexte: "Le ton doit être intrigant et légèrement inquiétant. L'histoire se passe dans un futur proche réaliste. Évite les clichés des robots méchants.",
+                    format: "Un texte de 300 mots maximum avec une accroche forte dès la première phrase"
+                },
+                code: {
+                    role: "Tu es un développeur web expérimenté qui sait vulgariser pour les débutants",
+                    tache: "Aide-moi à créer un formulaire de contact en HTML/CSS",
+                    contexte: "Je débute en programmation, je connais les bases HTML. Le formulaire doit avoir : nom, email, message, bouton envoyer. Design moderne et épuré.",
+                    format: "Le code complet commenté ligne par ligne + explications de chaque partie"
+                },
+                revision: {
+                    role: "Tu es un professeur d'histoire-géographie qui prépare ses élèves au bac",
+                    tache: "Crée une fiche de révision sur la Guerre Froide",
+                    contexte: "Pour le bac de Terminale. Je dois retenir les dates clés, les acteurs principaux et comprendre les enjeux. J'ai 2h pour réviser ce chapitre.",
+                    format: "Fiche structurée avec : dates essentielles (max 10), personnages clés, concepts à retenir, et 3 sujets de dissertation possibles"
+                }
             },
-            creative: {
-                role: "Tu es un auteur de science-fiction inspiré par Black Mirror",
-                tache: "Écris le début d'une nouvelle sur l'intelligence artificielle",
-                contexte: "Le ton doit être intrigant et légèrement inquiétant. L'histoire se passe dans un futur proche réaliste. Évite les clichés des robots méchants.",
-                format: "Un texte de 300 mots maximum avec une accroche forte dès la première phrase"
-            },
-            code: {
-                role: "Tu es un développeur web expérimenté qui sait vulgariser pour les débutants",
-                tache: "Aide-moi à créer un formulaire de contact en HTML/CSS",
-                contexte: "Je débute en programmation, je connais les bases HTML. Le formulaire doit avoir : nom, email, message, bouton envoyer. Design moderne et épuré.",
-                format: "Le code complet commenté ligne par ligne + explications de chaque partie"
-            },
-            revision: {
-                role: "Tu es un professeur d'histoire-géographie qui prépare ses élèves au bac",
-                tache: "Crée une fiche de révision sur la Guerre Froide",
-                contexte: "Pour le bac de Terminale. Je dois retenir les dates clés, les acteurs principaux et comprendre les enjeux. J'ai 2h pour réviser ce chapitre.",
-                format: "Fiche structurée avec : dates essentielles (max 10), personnages clés, concepts à retenir, et 3 sujets de dissertation possibles"
+            en: {
+                devoirs: {
+                    role: "You are a patient and pedagogical tutor specializing in high school mathematics",
+                    tache: "Explain to me how to solve a quadratic equation",
+                    contexte: "I'm in 11th grade, I struggle with the discriminant. I need to understand the reasoning, not just the answer.",
+                    format: "Step-by-step explanations with a simple example, then a practice exercise"
+                },
+                creative: {
+                    role: "You are a science-fiction author inspired by Black Mirror",
+                    tache: "Write the opening of a short story about artificial intelligence",
+                    contexte: "The tone should be intriguing and slightly unsettling. The story takes place in a realistic near future. Avoid evil robot clichés.",
+                    format: "A text of 300 words maximum with a strong hook from the very first sentence"
+                },
+                code: {
+                    role: "You are an experienced web developer who knows how to explain things to beginners",
+                    tache: "Help me create a contact form in HTML/CSS",
+                    contexte: "I'm new to programming, I know basic HTML. The form should have: name, email, message, send button. Modern and clean design.",
+                    format: "Complete code commented line by line + explanations of each part"
+                },
+                revision: {
+                    role: "You are a history teacher preparing students for their final exams",
+                    tache: "Create a study sheet on the Cold War",
+                    contexte: "For the final year exam. I need to remember key dates, main actors and understand the stakes. I have 2 hours to review this chapter.",
+                    format: "Structured sheet with: essential dates (max 10), key figures, concepts to remember, and 3 possible essay topics"
+                }
             }
         };
 
         function loadExample(type) {
-            const example = examples[type];
+            const example = examples[currentLang][type];
             inputRole.value = example.role;
             inputTache.value = example.tache;
             inputContexte.value = example.contexte;
